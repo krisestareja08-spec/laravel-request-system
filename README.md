@@ -335,11 +335,14 @@ A volume is still not a backup. It is on the same computer, so `down -v`, a dele
 The reviewer can run a second, separate copy from the repository:
 
 ```bash
-git clone https://github.com/JanEmmanuelIcal/laravel-request-system.git lab4-review
+# before the pull request is merged, clone the fork that has the Lab 4 branch
+git clone https://github.com/krisestareja08-spec/laravel-request-system.git lab4-review
 cd lab4-review
-git checkout <commit SHA>
-cp .env.container.example .env.container   # fill in values shared privately
+git checkout feature/lab4-containers
+cp .env.container.example .env.container   # then set your own DB_PASSWORD and MYSQL_PASSWORD
 ```
+
+After the merge, the same steps work with `https://github.com/JanEmmanuelIcal/laravel-request-system.git` and `main`.
 
 Then start it with its own project name and port (PowerShell):
 
