@@ -322,9 +322,9 @@ Never run `docker compose down -v` or delete `db_data`. That removes the databas
 
 | Check | Request ID | App container ID | Request details | Result |
 |---|---|---|---|---|
-| Before replacement | [ID] | [container ID] | CONTAINER-PERSIST-01, [owner], qty [n], [status] | Saved |
-| After `--force-recreate` | [ID] | [new container ID] | same | [Persisted / Not persisted] |
-| After `down` / `up -d` | [ID] | [new container ID] | same | [Persisted / Not persisted] |
+| Before replacement | 4 | Not recorded | CONTAINER-PERSIST-01, Maria Santos, qty 3, pending | Saved |
+| After `--force-recreate` | 4 | Not recorded | same | Persisted |
+| After `down` / `up -d` | 4 | 6850ca1790fc | same | Persisted |
 
 The records survive because MySQL writes them to the `db_data` volume, not to the `app` container. Replacing `app` or running `down` removes containers but keeps named volumes.
 
