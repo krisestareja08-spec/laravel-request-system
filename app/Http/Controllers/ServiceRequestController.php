@@ -69,9 +69,8 @@ $serviceRequest->save();
             'status' => ['required', 'in:pending,approved,rejected'],
         ]);
 
-        $serviceRequest->update([
-            'status' => $validated['status'],
-        ]);
+        $serviceRequest->status = $validated['status'];
+        $serviceRequest->save();
 
         return redirect()
             ->route('requests.show', $serviceRequest)
