@@ -1,0 +1,59 @@
+# git and editor files
+.git
+.gitattributes
+.idea
+.vscode
+.fleet
+.zed
+.editorconfig
+
+# environment files and secrets
+.env
+.env.*
+auth.json
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+id_rsa*
+id_ed25519*
+
+# dependencies installed on the host (rebuilt inside the image)
+vendor
+node_modules
+public/build
+public/hot
+public/storage
+
+# cached and generated files
+bootstrap/cache/*.php
+storage/logs/*
+storage/pail
+storage/framework/cache/data/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/framework/testing/*
+.phpunit.result.cache
+.phpunit.cache
+
+# database files, backups, archives and logs
+database/*.sqlite
+*.sql
+*.sql.gz
+*.dump
+*.bak
+*.zip
+*.rar
+*.7z
+*.tar
+*.tar.gz
+*.tgz
+*.log
+
+# not needed in the image
+tests
+*.docx
+Dockerfile
+compose.yaml
+.dockerignore
