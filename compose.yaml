@@ -1,0 +1,64 @@
+services:
+    web:
+        build:
+            context: .
+            target: web
+        ports:
+            # only bound to localhost, change WEB_PORT if 8080 is taken
+            - "127.0.0.1:${WEB_PORT:-8080}:8080"
+        depends_on:
+            app:
+                condition: service_healthy
+        healthcheck:
+            test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:8080/up || exit 1"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+            start_period: 10s
+        networks:
+            - backend
+        restart: unless-stopped
+
+    app:
+        build:
+            context: .
+            target: app
+        env_file:
+            - .env.container
+        depends_on:
+            db:
+                condition: service_healthy
+        healthcheck:
+            test: ["CMD", "php", "-r", "exit(@fsockopen('127.0.0.1', 9000) ? 0 : 1);"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+            start_period: 10s
+        networks:
+            - backend
+        restart: unless-stopped
+
+    db:
+        image: mysql:8.4
+        env_file:
+            - .env.container
+        volumes:
+            - db_data:/var/lib/mysql
+        # no ports here so MySQL is not reachable from outside Docker
+        healthcheck:
+            # logs in as the app user over TCP, so it only passes when the database is really ready
+            test: ["CMD-SHELL", "MYSQL_PWD=\"$$MYSQL_PASSWORD\" mysql -h 127.0.0.1 -u \"$$MYSQL_USER\" -e 'SELECT 1' \"$$MYSQL_DATABASE\" > /dev/null 2>&1 || exit 1"]
+            interval: 10s
+            timeout: 5s
+            retries: 10
+            start_period: 30s
+        networks:
+            - backend
+        restart: unless-stopped
+
+networks:
+    backend:
+        driver: bridge
+
+volumes:
+    db_data:
